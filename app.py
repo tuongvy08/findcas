@@ -1,13 +1,17 @@
 from flask import Flask, jsonify, render_template, request
 import sqlite3
+import os
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
+# Đường dẫn database
+DB_PATH = '/home/deploy/myapps/shared_data/products.db'
+
 # Hàm tìm kiếm sản phẩm dựa trên CAS
 def query_products_by_cas(cas_list):
     results = []
-    with sqlite3.connect('products.db') as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         placeholders = ', '.join(['?'] * len(cas_list))
         query = f"""
