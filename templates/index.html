@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tìm kiếm CAS</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function searchProducts() {
+            const casList = Array.from(document.querySelectorAll('#search-page input[name="cas"]'))
+                .map(input => input.value.trim())
+                .filter(cas => cas !== '');
+
+            fetch("/search", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ cas: casList }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    displayResults(data.results);
+                });
+        }
+
+        function displayResults(results) {
+            const resultsPage = document.getElementById("results-page");
+            const resultsTableBody = document.querySelector("#results-table tbody");
+
+            document.getElementById("search-page").classList.add("hidden");
+            resultsPage.classList.remove("hidden");
+
+            resultsTableBody.innerHTML = '';
+
+            if (results.length === 0) {
+                resultsTableBody.innerHTML = '<tr><td colspan="7">Không tìm thấy kết quả.</td></tr>';
+                return;
+            }
+
+            results.forEach((result) => {
+                const row = document.createElement('tr');
+
+                const cellName = document.createElement('td');
+                cellName.textContent = result.Name || '';
+                row.appendChild(cellName);
+
+                const cellCode = document.createElement('td');
+                cellCode.textContent = result.Code || '';
+                row.appendChild(cellCode);
+
+                const cellCAS = document.createElement('td');
+                cellCAS.textContent = result.CAS || '';
+                row.appendChild(cellCAS);
+
+                const cellBrand = document.createElement('td');
+                cellBrand.textContent = result.Brand || '';
+                row.appendChild(cellBrand);
+
+                const cellSize = document.createElement('td');
+                cellSize.textContent = result.Size || '';
+                row.appendChild(cellSize);
+
+                const cellPrice = document.createElement('td');
+                cellPrice.textContent = result.Price || '';
+                row.appendChild(cellPrice);
+
+                const cellNote = document.createElement('td');
+                cellNote.textContent = result.Note || '';
+                row.appendChild(cellNote);
+
+                if (result.Brand === 'Phụ lục I') {
+                    row.style.backgroundColor = '#ffe4e1';
+                } else if (result.Brand === 'Phụ lục II') {
+                    row.style.backgroundColor = '#fffacd';
+                } else if (result.Brand === 'CẤM NHẬP') {
+                    row.style.backgroundColor = '#e0ffff';
+                }
+
+                resultsTableBody.appendChild(row);
+            });
+        }
+
+        function backToSearch() {
+            // Hiển thị lại trang tìm kiếm
+            document.getElementById("results-page").classList.add("hidden");
+            document.getElementById("search-page").classList.remove("hidden");
+
+            // Xóa toàn bộ dữ liệu trong các ô tìm kiếm
+            const searchInputs = document.querySelectorAll('#search-page input[name="cas"]');
+            searchInputs.forEach(input => input.value = '');
+        }
+
+        // Xử lý paste nhiều CAS vào các ô nhập liệu
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector('input[name="cas"]').addEventListener('paste', function (e) {
+                const data = e.clipboardData.getData('text');
+                const lines = data.split('\n').map(line => line.trim());
+                const casInputs = document.querySelectorAll('input[name="cas"]');
+
+                lines.forEach((line, index) => {
+                    if (index < casInputs.length) {
+                        casInputs[index].value = line;
+                    }
+                });
+                e.preventDefault();
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Trang Tìm Kiếm -->
+    <div id="search-page">
+        <div class="container">
+            <h1 class="title">Tìm Nhiều CAS</h1>
+            <p class="description">Nhập các CAS bạn muốn tìm kiếm hoặc dán danh sách CAS.</p>
+            <form id="search-form" onsubmit="event.preventDefault(); searchProducts();">
+                <table id="search-table">
+                    <tr>
+                        <th>CAS</th>
+                        <th><button type="submit">Search</button></th>
+                    </tr>
+                    {% for _ in range(50) %}
+                    <tr>
+                        <td><input type="text" name="cas" placeholder="Nhập CAS"></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </form>
+        </div>
+    </div>
+
+    <!-- Trang Kết Quả -->
+    <div id="results-page" class="hidden">
+        <div class="container">
+            <button onclick="backToSearch()">Quay lại</button>
+            <h2>Kết quả Tìm Kiếm</h2>
+            <table id="results-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>CAS</th>
+                        <th>Brand</th>
+                        <th>Size</th>
+                        <th>Unit Price</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
