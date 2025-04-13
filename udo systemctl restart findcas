@@ -1,0 +1,20 @@
+[0;1;32m●[0m findcas.service - Gunicorn instance to serve findcas
+     Loaded: loaded (/etc/systemd/system/findcas.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Fri 2025-02-07 08:21:08 UTC; 7s ago
+   Main PID: 2662 (gunicorn)
+      Tasks: 4 (limit: 1011)
+     Memory: 56.0M
+        CPU: 559ms
+     CGroup: /system.slice/findcas.service
+             ├─2662 /home/deploy/myapps/findcas/venv/bin/python3 /home/deploy/myapps/findcas/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8001 app:app
+             ├─2663 /home/deploy/myapps/findcas/venv/bin/python3 /home/deploy/myapps/findcas/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8001 app:app
+             ├─2664 /home/deploy/myapps/findcas/venv/bin/python3 /home/deploy/myapps/findcas/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8001 app:app
+             └─2665 /home/deploy/myapps/findcas/venv/bin/python3 /home/deploy/myapps/findcas/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8001 app:app
+
+Feb 07 08:21:08 vultr systemd[1]: Started Gunicorn instance to serve findcas.
+Feb 07 08:21:08 vultr gunicorn[2662]: [2025-02-07 08:21:08 +0000] [2662] [INFO] Starting gunicorn 21.2.0
+Feb 07 08:21:08 vultr gunicorn[2662]: [2025-02-07 08:21:08 +0000] [2662] [INFO] Listening at: http://127.0.0.1:8001 (2662)
+Feb 07 08:21:08 vultr gunicorn[2662]: [2025-02-07 08:21:08 +0000] [2662] [INFO] Using worker: sync
+Feb 07 08:21:08 vultr gunicorn[2663]: [2025-02-07 08:21:08 +0000] [2663] [INFO] Booting worker with pid: 2663
+Feb 07 08:21:08 vultr gunicorn[2664]: [2025-02-07 08:21:08 +0000] [2664] [INFO] Booting worker with pid: 2664
+Feb 07 08:21:08 vultr gunicorn[2665]: [2025-02-07 08:21:08 +0000] [2665] [INFO] Booting worker with pid: 2665
