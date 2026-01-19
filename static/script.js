@@ -67,9 +67,9 @@ function displayResults(results) {
         row.appendChild(cellNote);
 
         // Tô màu theo Brand
-        if (result.Brand === 'Phụ lục I') {
+        if (result.Brand === 'Phụ lục II') {
             row.style.backgroundColor = '#ffe4e1'; // Màu đỏ nhạt
-        } else if (result.Brand === 'Phụ lục II') {
+        } else if (result.Brand === 'Phụ lục III') {
             row.style.backgroundColor = '#fffacd'; // Màu vàng nhạt
         } else if (result.Brand === 'CẤM NHẬP') {
             row.style.backgroundColor = '#e0ffff'; // Màu xanh nhạt
