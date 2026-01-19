@@ -22,7 +22,7 @@ def query_products_by_cas(cas_list):
         query = f"""
             SELECT Name, Code, CAS, Brand, Size, Ship, Price, Note
             FROM products
-            WHERE CAS IN ({placeholders}) AND Brand IN ('Phụ lục I', 'Phụ lục II', 'CẤM NHẬP')
+            WHERE CAS IN ({placeholders}) AND Brand IN ('Phụ lục II', 'Phụ lục III', 'CẤM NHẬP')
         """
         cursor.execute(query, cas_list)
         rows = cursor.fetchall()
